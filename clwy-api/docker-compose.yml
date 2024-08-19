@@ -15,5 +15,4 @@ services:
 
 # SQL docker setup
 # use docker to init sql server
-
 #SQL added data
