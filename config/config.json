@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "clwy1234",
-    "database": "api_development",
+    "database": "api_dev",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "timezone": "-05:00"
