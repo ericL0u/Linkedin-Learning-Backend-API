@@ -58,4 +58,26 @@ router.get('/:id', async function(req,res){
 
 })
 
+router.post('/', async function(req, res){
+
+    try{   
+        const article = await Article.create(req.body)
+        res.status(201).json({
+            status: true,
+            message: 'created article',
+            data: article
+        })
+    }
+    catch(error){
+        res.status(500).json({
+            status: false,
+            message: 'error',
+            errors: [error.message]
+        })
+    }
+})
+
+
+
+
 module.exports = router;
