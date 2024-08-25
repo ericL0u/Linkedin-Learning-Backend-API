@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 /* GET home page. */
-router.get('/hello', function(req, res, next) {
+router.get('/', function(req, res, next) {
+  const articles = Ar
   res.json({ message: 'HELLO' });
 });
 
