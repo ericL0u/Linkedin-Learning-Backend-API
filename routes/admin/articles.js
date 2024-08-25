@@ -78,6 +78,40 @@ router.post('/', async function(req, res){
 })
 
 
+router.delete('/:id', async function(req, res){
+
+    try{   
+        const {id} = req.params;
+
+        const article = await Article.findByPk(id)
+
+        if (article){
+            await article.destroy()
+
+            res.json({
+                status:true,
+                message: 'Success deletion'
+            })
+        }
+        else {
+            res.status(404).json({
+                status:false,
+                message: 'Deletion record not found'
+            })
+        }
+    }
+    catch(error){
+        res.status(500).json({
+            status: false,
+            message: 'error',
+            errors: [error.message]
+        })
+    }
+})
+
+
+
+
 
 
 module.exports = router;
