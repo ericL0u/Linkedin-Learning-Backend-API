@@ -10,10 +10,12 @@ try{
     // added searching functionaility to query searches
     const query = req.query
 
-    const condition = {
-        order: [['id', 'DESC']]
-    };
 
+    const currentPage = Math.abs(Number(query.currentPage)) || 1;
+    const pageSize = Math.abs(Number(query.pageSize)) || 10;
+
+    // calculate offset
+    const offSet = (currentPage-1) * pageSize
 
     if(query.title){
         condition.where = {
@@ -23,13 +25,25 @@ try{
         }
     }
 
+    const condition = {
+        order: [['id', 'DESC']],
+        limit: pageSize,
+        offset: offSet
+    };
 
-    const articles = await Article.findAll(condition);
+    const {count,rows} = await Article.findAndCountAll(condition);
 
     res.json({
         status : true,
         message: 'recieved data',
-        data: {articles}
+        data: {
+            articles: rows,
+            pagination: {
+                total:count,
+                currentPage,
+                pageSize
+            }
+        }
     })
 
 } catch(error){
@@ -47,6 +61,7 @@ router.get('/:id', async function(req,res){
     try{
         const {id} = req.params
         const article = await Article.findByPk(id)
+
         if (article){
             res.json(
             {
