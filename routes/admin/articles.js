@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {Article} = require('../../models')
 
-
+// get ALL articles from database 
 router.get('/', async function(req,res){
 try{
     const condition = {
@@ -26,6 +26,7 @@ try{
 }
 })
 
+// search for specific article
 router.get('/:id', async function(req,res){
 
     try{
@@ -58,6 +59,7 @@ router.get('/:id', async function(req,res){
 
 })
 
+// add new article
 router.post('/', async function(req, res){
 
     try{   
@@ -77,7 +79,7 @@ router.post('/', async function(req, res){
     }
 })
 
-
+// deletion of records on database
 router.delete('/:id', async function(req, res){
 
     try{   
@@ -109,7 +111,37 @@ router.delete('/:id', async function(req, res){
     }
 })
 
+// change for specific article ENTIRELY
+router.put('/:id', async function(req,res){
 
+    try{
+        const {id} = req.params
+        const article = await Article.findByPk(id)
+        if (article){
+            await article.update(req.body)
+            res.json(
+            {
+            status:true,
+            messgae: 'Change is successful',    
+            data: article
+            }
+            )}
+            
+        else{
+            res.status(404).json({
+                status: false, 
+                message: 'document not found, try to create record'
+            })
+        }
+    }
+    catch(error){
+        res.status(500).json({
+            status: false,
+            message: 'error',
+            errors: [error.message]
+        })
+    }
+})
 
 
 
