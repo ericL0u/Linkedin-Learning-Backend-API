@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {Article} = require('../../models')
 const {Op} = require('sequelize')
-
+const {NotFoundError, success} = require('../../utils/response')
 
 // get ALL articles from database 
 router.get('/', async function(req,res){
@@ -10,8 +10,8 @@ try{
     // added searching functionaility to query searches
     const query = req.query
 
-
     const currentPage = Math.abs(Number(query.currentPage)) || 1;
+
     const pageSize = Math.abs(Number(query.pageSize)) || 10;
 
     // calculate offset
@@ -33,20 +33,17 @@ try{
 
     const {count,rows} = await Article.findAndCountAll(condition);
 
-    res.json({
-        status : true,
-        message: 'recieved data',
-        data: {
+    success(res,'sucessfully recieved data', {
             articles: rows,
             pagination: {
                 total:count,
                 currentPage,
                 pageSize
             }
-        }
-    })
-
-} catch(error){
+        })
+        } 
+        
+catch(error){
     res.status(500).json({
         status: false,
         message: 'error',
@@ -59,24 +56,10 @@ try{
 router.get('/:id', async function(req,res){
 
     try{
-        const {id} = req.params
-        const article = await Article.findByPk(id)
+        const article = getArticle(req)
 
-        if (article){
-            res.json(
-            {
-            status:true,
-            messgae: 'success',    
-            data: article
-            }
-            )}
+        success(res,'sucessfully recieved data',{article})
             
-        else{
-            res.status(404).json({
-                status: false, 
-                message: 'document not found'
-            })
-        }
     }
     catch(error){
         res.status(500).json({
@@ -94,18 +77,28 @@ router.post('/', async function(req, res){
 
     try{   
         const article = await Article.create(req.body)
-        res.status(201).json({
-            status: true,
-            message: 'created article',
-            data: article
-        })
+        success(res,'created article',{article},201)
     }
     catch(error){
-        res.status(500).json({
+
+        if (error.name === 'SequelizeValidationError'){
+            const errors = error.errors.map(e=>e.message)
+    
+        res.status(400).json({
             status: false,
             message: 'error',
-            errors: [error.message]
+            errors
         })
+        }
+
+        else{
+            res.status(500).json({
+                status: false,
+                message: 'error',
+                errors: [error.message]
+            })
+        }
+
     }
 })
 
@@ -113,24 +106,10 @@ router.post('/', async function(req, res){
 router.delete('/:id', async function(req, res){
 
     try{   
-        const {id} = req.params;
+        const article = getArticle(req)
 
-        const article = await Article.findByPk(id)
-
-        if (article){
-            await article.destroy()
-
-            res.json({
-                status:true,
-                message: 'Success deletion'
-            })
-        }
-        else {
-            res.status(404).json({
-                status:false,
-                message: 'Deletion record not found'
-            })
-        }
+        await article.destroy()
+        success(res, 'cSuccess deletion')
     }
     catch(error){
         res.status(500).json({
@@ -145,24 +124,12 @@ router.delete('/:id', async function(req, res){
 router.put('/:id', async function(req,res){
 
     try{
-        const {id} = req.params
-        const article = await Article.findByPk(id)
-        if (article){
-            await article.update(req.body)
-            res.json(
-            {
-            status:true,
-            messgae: 'Change is successful',    
-            data: article
-            }
-            )}
+        const article = getArticle(req)
+
+        await article.update(req.body)
+
+        success(res, 'Change is successful',{article})
             
-        else{
-            res.status(404).json({
-                status: false, 
-                message: 'document not found, try to create record'
-            })
-        }
     }
     catch(error){
         res.status(500).json({
@@ -174,6 +141,19 @@ router.put('/:id', async function(req,res){
 })
 
 
+async function getArticle(req){
+
+    const {id} = req.params
+
+    const article = await Article.findByPk(id)
+
+    if(!article){
+        throw new NotFoundError(`ID: ${id} article not found`)
+    }
+
+    return article
+
+}
 
 
 module.exports = router;
