@@ -30,3 +30,5 @@ module.exports = {
     await queryInterface.dropTable('Articles');
   }
 };
+
+// migration file create Articles table
