@@ -13,13 +13,7 @@ function success(res, message,data = {}, code = 200){
         data
 
     })
-
-
 }
-
-
-
-
 
 
 module.exports = {
