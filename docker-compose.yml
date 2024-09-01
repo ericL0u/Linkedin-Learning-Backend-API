@@ -5,7 +5,7 @@ services:
     image: mysql:8.3.0
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     environment:
-      - MYSQL_ROOT_PASSWORD=clwy1234
+      - MYSQL_ROOT_PASSWORD=1234
       - MYSQL_LOWER_CASE_TABLE_NAMES=0
     ports:
       - "3306:3306"
@@ -13,6 +13,7 @@ services:
       - ./data/mysql:/var/lib/mysql
 
 
-# SQL docker setup
-# use docker to init sql server
-#SQL added data
+# SQL docker setup with docker
+
+#command:
+#docker-compose up -d
