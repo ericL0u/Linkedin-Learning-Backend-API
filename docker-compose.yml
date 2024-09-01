@@ -12,6 +12,9 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
 
+networks:
+  my-network:
+    driver: bridge
 
 # SQL docker setup with docker
 
