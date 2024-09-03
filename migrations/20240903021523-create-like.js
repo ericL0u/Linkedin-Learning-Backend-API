@@ -29,7 +29,7 @@ module.exports = {
 
     await queryInterface.addIndex(
       'Likes',{
-        fields: ['courseId']
+        fields: ['coursesId']
       })
     await queryInterface.addIndex(
       'Likes', {
@@ -37,7 +37,7 @@ module.exports = {
       }
     )
   },
-  
+
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Likes');
   }

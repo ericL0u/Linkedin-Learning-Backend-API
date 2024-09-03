@@ -52,19 +52,19 @@ module.exports = {
     });
 
     await queryInterface.addIndex(
-      'User', {
+      'Users', {
         fields:['email'],
         unique:true
       }
     )
     await queryInterface.addIndex(
-      'User', {
+      'Users', {
         fields:['username'],
         unique:true
       }
     )
     await queryInterface.addIndex(
-      'User', {
+      'Users', {
         fields:['role']
       }
     )

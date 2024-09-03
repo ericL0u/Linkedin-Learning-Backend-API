@@ -43,7 +43,7 @@ module.exports = {
 
     await queryInterface.addIndex(
       'Chapters',{
-        fields:['courseId']
+        fields:['coursesId']
       }
     )
   },
