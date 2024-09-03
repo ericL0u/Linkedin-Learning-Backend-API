@@ -8,7 +8,8 @@ const usersRouter = require('./routes/users');
 
 // backend API port, directs to articles stored
 const adminArticlesRouter = require('./routes/admin/articles');
-
+// backend API port, directs to category stored
+const adminCategoriesRouter = require('./routes/admin/categories');
 
 const app = express();
 
@@ -23,5 +24,5 @@ app.use('/users', usersRouter);
 
 // backend router settings
 app.use('/admin/articles', adminArticlesRouter)
-
+app.use('/admin/categories', adminCategoriesRouter)
 module.exports = app;
