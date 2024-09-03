@@ -2,44 +2,46 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Courses', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER.UNSIGNED
+        type: Sequelize.INTEGER
       },
-      email: {
+      categoryId: {
+        allowNull:false,
+        type: Sequelize.INTEGER
+      },
+      userId: {
+        allowNull:false,
+        type: Sequelize.INTEGER
+      },
+      name: {
         allowNull:false,
         type: Sequelize.STRING
       },
-      username: {
-        allowNull:false,
+      image: {
         type: Sequelize.STRING
       },
-      password: {
-        allowNull:false,
-        type: Sequelize.STRING
+      recommanded: {
+        type: Sequelize.BOOLEAN
       },
-      nickname: {
-        allowNull:false,
-        type: Sequelize.STRING
+      introductory: {
+        type: Sequelize.BOOLEAN
       },
-      sex: {
-        allowNull:false,
-        defaultValue:9,
-        type: Sequelize.TINYINT
-      },
-      company: {
-        type: Sequelize.STRING
-      },
-      introduce: {
+      content: {
         type: Sequelize.TEXT
       },
-      role: {
+      likesCount: {
+        allowNull:false,
+        defaultValue:0, 
+        type: Sequelize.INTEGER
+      },
+      chaptersCount: {
         allowNull:false,
         defaultValue:0,
-        type: Sequelize.TINYINT.UNSIGNED
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -52,27 +54,21 @@ module.exports = {
     });
 
     await queryInterface.addIndex(
-      'User', {
-        fields:['email'],
-        unique:true
+      'Courses', {
+        fields:['categoryId']
       }
     )
     await queryInterface.addIndex(
-      'User', {
-        fields:['username'],
-        unique:true
+      'Courses', {
+        fields:['userId']
       }
     )
-    await queryInterface.addIndex(
-      'User', {
-        fields:['role']
-      }
-    )
+
 
 
 
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Courses');
   }
 };
