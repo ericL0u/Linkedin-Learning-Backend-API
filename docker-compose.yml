@@ -20,3 +20,7 @@ networks:
 
 #command:
 #docker-compose up -d
+
+
+# Make sure to add mysql database named "api_dev" in the docker sql terminal
+# CREATE DATABASE api_dev
