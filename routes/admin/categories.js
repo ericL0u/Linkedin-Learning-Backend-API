@@ -26,7 +26,7 @@ try{
     }
 
     const condition = {
-        order: [['id', 'DESC']],
+        order: [['rank', 'ASC']],
         limit: pageSize,
         offset: offSet
     };
