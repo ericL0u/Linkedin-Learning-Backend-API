@@ -56,7 +56,7 @@ catch(error){
 router.get('/:id', async function(req,res){
 
     try{
-        const article = getArticle(req)
+        const article = await getArticle(req)
 
         success(res,'sucessfully recieved data',{article})
             
@@ -106,7 +106,7 @@ router.post('/', async function(req, res){
 router.delete('/:id', async function(req, res){
 
     try{   
-        const article = getArticle(req)
+        const article = await getArticle(req)
 
         await article.destroy()
         success(res, 'cSuccess deletion')
@@ -124,7 +124,7 @@ router.delete('/:id', async function(req, res){
 router.put('/:id', async function(req,res){
 
     try{
-        const article = getArticle(req)
+        const article = await getArticle(req)
 
         await article.update(req.body)
 

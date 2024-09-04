@@ -31,7 +31,7 @@ try{
         offset: offSet
     };
 
-    const {count,rows} = await Category.findAndCountAll(condition);
+    const {count, rows} = await Category.findAndCountAll(condition);
 
     success(res,'sucessfully recieved data', {
             categories: rows,
@@ -52,13 +52,12 @@ catch(error){
 }
 })
 
-// search for specific article
+// search for specific category
 router.get('/:id', async function(req,res){
 
     try{
-        const article = getCategory(req)
-
-        success(res,'sucessfully recieved data',{article})
+        const category = await getCategory(req)
+        success(res,'sucessfully recieved data',{category})
             
     }
     catch(error){
@@ -72,12 +71,12 @@ router.get('/:id', async function(req,res){
 
 })
 
-// add new article
+// add new category
 router.post('/', async function(req, res){
 
     try{   
-        const article = await Category.create(req.body)
-        success(res,'created article',{article},201)
+        const category = await Category.create(req.body)
+        success(res,'created category',{category},201)
     }
     catch(error){
 
@@ -106,9 +105,9 @@ router.post('/', async function(req, res){
 router.delete('/:id', async function(req, res){
 
     try{   
-        const article = getCategory(req)
+        const category = await getCategory(req)
 
-        await article.destroy()
+        await category.destroy()
         success(res, 'cSuccess deletion')
     }
     catch(error){
@@ -120,15 +119,15 @@ router.delete('/:id', async function(req, res){
     }
 })
 
-// change for specific article ENTIRELY
+// change for specific category ENTIRELY
 router.put('/:id', async function(req,res){
 
     try{
-        const article = getCategory(req)
+        const category = await getCategory(req)
 
-        await article.update(req.body)
+        await category.update(req.body)
 
-        success(res, 'Change is successful',{article})
+        success(res, 'Change is successful',{category})
             
     }
     catch(error){
@@ -145,13 +144,13 @@ async function getCategory(req){
 
     const {id} = req.params
 
-    const article = await Category.findByPk(id)
+    const category = await Category.findByPk(id)
 
-    if(!article){
-        throw new NotFoundError(`ID: ${id} article not found`)
+    if(!category){
+        throw new NotFoundError(`ID: ${id} category not found`)
     }
 
-    return article
+    return category
 
 }
 

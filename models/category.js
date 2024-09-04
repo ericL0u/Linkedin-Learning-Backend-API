@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Category.init({
     name: {
-      
       type: DataTypes.STRING,
       allowNull: false,
       unique: {msg: "the category exists, please change to a different name"},
